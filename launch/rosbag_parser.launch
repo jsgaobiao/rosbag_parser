@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="bag_path" default="/media/pku-m/BluePassport/201_Data/GuiLin201712/ForCalib/LiDAR_CAM_INS_2017-12-13-16-15-26_4.bag.biaoding"/>
+    <arg name="bag_path" default="/home/gaobiao/Data/201/LiDAR_CAM_INS_2017-12-13-09-39-20_1.bag"/>
     <arg name="rate" default=""/>
 
     <!-- set a /global_example parameter -->
@@ -15,5 +15,6 @@
     <!-- parse data -->
     <node pkg="rosbag_parser" name="video_saver" type="video_saver.py" output="screen" />
     <node pkg="rosbag_parser" name="velodyne_packets_saver" type="velodyne_packets_saver.py" output="screen" />
+    <node pkg="rosbag_parser" name="gps_saver" type="gps_saver.py" output="screen" />
 
 </launch>
