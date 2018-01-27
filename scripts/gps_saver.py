@@ -22,7 +22,7 @@ class NavDecoder:
         rospy.Subscriber(topic, Odometry, self.callback)
 
     def callback(self, data):
-        time = data.header.stamp.secs * 1000 + data.header.stamp.nsecs/1E6  # ms
+        time = data.header.stamp.secs * 1000000 + data.header.stamp.nsecs/1E3  # ms
         self.nav_file.write("%d\t"%time)
         quater = [data.pose.pose.orientation.x,
                   data.pose.pose.orientation.y,

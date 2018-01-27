@@ -18,7 +18,7 @@ class VelodyneDecoder:
     def callback(self, data):
         for packet in data.packets:
             if len(data.packets) == 288:
-                time = packet.stamp.secs*1000 + packet.stamp.nsecs/1e6  # ms
+                time = packet.stamp.secs*1000000 + packet.stamp.nsecs/1e3  # us
                 time_bytes = struct.pack('L', time)
                 self.lidar_file.write(time_bytes)
                 self.lidar_file.write(packet.data)

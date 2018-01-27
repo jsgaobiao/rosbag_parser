@@ -24,7 +24,7 @@ class ImageDecoder:
         if VERBOSE:
             print 'received image of type: "%s"' % ros_data.format
         #### direct conversion to CV2 ####
-        stamp = ros_data.header.stamp.secs * 1000 + ros_data.header.stamp.nsecs / 1e6
+        stamp = ros_data.header.stamp.secs * 1000000 + ros_data.header.stamp.nsecs / 1e3
 
         np_arr = np.fromstring(ros_data.data, np.uint8)
         image_np = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)

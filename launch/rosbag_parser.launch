@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="bag_path" default="/home/gaobiao/Data/201/LiDAR_CAM_INS_2017-12-13-09-39-20_1.bag"/>
+    <arg name="bag_path" default="/media/gaobiao/SeagateBackupPlusDrive/201/GuiLin201712/garage_hongling_round/garage_hongling_round1/LiDAR_CAM_INS_2017-12-13-09-34-39_0.bag"/>
     <arg name="rate" default=""/>
 
     <!-- set a /global_example parameter -->
