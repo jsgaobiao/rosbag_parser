@@ -9,7 +9,7 @@ from velodyne_msgs.msg import VelodynePacket, VelodyneScan
 class VelodyneDecoder:
     def __init__(self, prefix):
         self.lidar_file = None
-        self.velodyne_packets_path = prefix + ".hdl"
+        self.velodyne_packets_path = prefix.split('.')[0] + ".hdl"
         self.lidar_file = open(self.velodyne_packets_path, "w")
 
         topic = '/velodyne_top_driver/velodyne_packets'

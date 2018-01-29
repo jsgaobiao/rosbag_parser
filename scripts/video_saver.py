@@ -17,8 +17,8 @@ class ImageDecoder:
         self.videowriter = None
         self.tswriter = None
 
-        self.videofilename = prefix + ".avi"
-        self.timestampfilename = prefix + ".ts"
+        self.videofilename = prefix.split('.')[0] + ".avi"
+        self.timestampfilename = prefix.split('.')[0] + ".ts"
 
     def callback(self, ros_data):
         if VERBOSE:
