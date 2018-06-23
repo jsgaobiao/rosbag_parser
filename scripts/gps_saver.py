@@ -18,14 +18,14 @@ class NavDecoder:
         self.nav_file = open(self.nav_path, "w")
 
         # # garage_honglin_round1
-        # self.origin_x = 432156.101671
-        # self.origin_y = 2782892.03132
-        # self.origin_z = 149.103001548
+        self.origin_x = 432156.101671
+        self.origin_y = 2782892.03132
+        self.origin_z = 149.103001548
 
         # garage_honglin_round2
-        self.origin_x = 432082.96876
-        self.origin_y = 2782647.71575
-        self.origin_z = 149.147030
+        # self.origin_x = 432082.96876
+        # self.origin_y = 2782647.71575
+        # self.origin_z = 149.147030
 
         self.nav_origin_topic = '/navsat/origin'
         self.nav_topic = '/navsat/odom'
