@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="bag_path" default="/media/gaobiao/GaoBiaoBigDisk/GuiLin201712/hongling/Round1/LiDAR_CAM_INS_2017-12-12-15-13-15_2.bag"/>
+    <arg name="output_bag_path" default="/media/gaobiao/GaoBiaoBigDisk/GuiLin201712/hongling/Round1/intermediate_result/2_pointcloud_and_nav.bag"/>
+    <arg name="rate" default="1"/>
+    <arg name="listen_topic" default="/velodyne_points /navsat/odom /navsat/origin"/>
+
+    <!-- set a /global_example parameter -->
+    <param name="file_prefix" value="$(arg bag_path)"/>
+
+    <!-- play rosbag -->
+    <node name="ros_data_replay" pkg="rosbag" type="play" output="screen" args="$(arg bag_path) --clock -r $(arg rate) ">
+        <remap from="/velodyne_top_driver/velodyne_packets" to="/velodyne_packets" />
+    </node>
+
+    <!-- convert velodyne_packets to velodyne_pointclouds -->
+    <include file="$(find rosbag_parser)/launch/nodelet_manager.launch" />
+    <include file="$(find rosbag_parser)/launch/cloud_nodelet.launch">
+        <!-- <arg name="calibration" value="$(find velodyne_pointcloud)/params/64e_utexas.yaml"/> -->
+    </include>
+
+    <!-- save rosbag from velodyne_packets to velodyne_pointclouds -->
+    <node name="ros_bag_saver" pkg="rosbag" type="record" output="screen" args=" $(arg listen_topic) -o $(arg output_bag_path)" />
+
+    <!-- parse data -->
+    <!-- <node pkg="rosbag_parser" name="velodyne_pointcloud_2_vdn" type="velodyne_pointcloud_2_vdn.py" output="screen"/> -->
+    <!-- <node pkg="rosbag_parser" name="video_saver" type="video_saver.py" output="screen" /> -->
+    <!-- <node pkg="rosbag_parser" name="velodyne_packets_saver" type="velodyne_packets_saver.py" output="screen" /> -->
+    <!-- <node pkg="rosbag_parser" name="gps_saver" type="gps_saver.py" output="screen" /> -->
+    <!-- <node pkg="rosbag_parser" name="ros_dwdx_saver" type="ros_dwdx_saver.py" output="screen" /> -->
+
+</launch>

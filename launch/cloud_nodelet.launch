@@ -12,6 +12,6 @@
     <param name="calibration" value="$(arg calibration)"/>
     <param name="max_range" value="$(arg max_range)"/>
     <param name="min_range" value="$(arg min_range)"/>
-    <remap from="/velodyne_packets" to="/velodyne_top_driver/velodyne_packets"/>
+    <!-- <remap from="/velodyne_packets" to="/velodyne_top_driver/velodyne_packets"/> -->
   </node>
 </launch>
