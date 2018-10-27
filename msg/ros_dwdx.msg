@@ -1,0 +1,20 @@
+# Header needs to be the first field to refer to std_msgs/Header, other msgs here needs to add the package name such as nav_msgs/Odometry
+Header header
+float64 time_label
+uint32 global_x
+uint32 global_y
+uint32 global_h
+uint16 zone
+int32 longitude
+int32 latitude
+uint16 heading
+int16 pitch
+int16 roll
+int16 global_vx
+int16 global_vy
+int16 global_vz
+int16 global_wx
+int16 global_wy
+int16 global_wz
+uint32 mileage
+uint32 id
