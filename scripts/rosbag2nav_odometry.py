@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
 # Convert rosbag(sensor_msgs/PointCloud2 && Odometry) to dsv format
+# Usage: 1. rosbag_saver_velopackets_2_pointcloud.launch (convert velodyne_packets to PointCloud2)
+#        2. run this script
+
 # DSV format definiton:
 #   point3d         ang
 #   point3d         shv (x, y, z)
@@ -20,14 +23,9 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import PoseWithCovariance, Point, Quaternion
 
-ROS_BAG_PATH = "/media/gaobiao/GaoBiaoBigDisk/GuiLin201712/hongling/Round1/intermediate_result/2_pointcloud_and_nav.bag"
-DSV_PATH = "/media/gaobiao/GaoBiaoBigDisk/GuiLin201712/hongling/Round1/intermediate_result/hongling_round1_2.dsv"
-VELO_TOPIC = "/velodyne_points"
+ROS_BAG_PATH = "/media/gaobiao/SeagateBackupPlusDrive/201/201-2018/data/guilin/hongling_Round1/LiDAR_CAM_INS_2017-12-12-15-08-33_1.bag"
+NAV_PATH = "/media/gaobiao/SeagateBackupPlusDrive/201/201-2018/data/guilin/hongling_Round1/1.nav"
 NAV_TOPIC = "/navsat/odom"
-VELO_HZ_RATIO = 2    # guilin data's velodyne is 20HZ, half circle data in 1 frame, so we need to combine 2 frames data into one.
-POINT_NUM_PER_BLOCK = 32 * 12
-BLOCK_NUM_PER_FRAME = int(580 / 2)
-SIZE_OF_POINT = 32
 
 def parse_nav_msg(navMsg):
     gx = navMsg.pose.pose.position.x
@@ -48,38 +46,18 @@ def get_millisec(stamp):
     time = float(H) * 3600000 + float(M) * 60000 + float(S) * 1000 + float(MS) / 1e3
     return time
 
-def get_next_point(data, ptCnt):
-    if ptCnt >= data.width:
-        point3fi = struct.pack("4f", 0,0,0,0)
-    else:
-        point3fi =  data.data[ptCnt*SIZE_OF_POINT+0:ptCnt*SIZE_OF_POINT+4]
-        point3fi += data.data[ptCnt*SIZE_OF_POINT+4:ptCnt*SIZE_OF_POINT+8]
-        point3fi += data.data[ptCnt*SIZE_OF_POINT+8:ptCnt*SIZE_OF_POINT+12]
-        point3fi += data.data[ptCnt*SIZE_OF_POINT+16:ptCnt*SIZE_OF_POINT+20]
-    ptCnt += 1
-    return point3fi, ptCnt
-
 # main
-outf = open(DSV_PATH, "wb")
+outf = open(NAV_PATH, "w")
 bag = rosbag.Bag(ROS_BAG_PATH)
 
-for topic, msg, ts in bag.read_messages(topics = [NAV_TOPIC, VELO_TOPIC]):
+for topic, msg, ts in bag.read_messages(topics = [NAV_TOPIC]):
     # nav/Odometry messages
     if topic == NAV_TOPIC:
         navMsg = msg
-    # sensor_msgs/PointCloud2 message
-    if topic == VELO_TOPIC:
         gx, gy, gz, roll, pitch, yaw = parse_nav_msg(navMsg)
         millisec = int(get_millisec(ts))
-        sNav = struct.pack("6dq", roll, pitch, yaw, gx, gy, gz, millisec)
-        print(millisec)
-        # parse velodyne points
-        ptCnt = 0
-        for i in range(BLOCK_NUM_PER_FRAME / VELO_HZ_RATIO):
-            outf.write(sNav)
-            for j in range(POINT_NUM_PER_BLOCK):
-                sPoint3fi, ptCnt = get_next_point(msg, ptCnt)
-                outf.write(sPoint3fi)
+        print(millisec, roll, pitch, yaw)
+        outf.write("%d\t%f\t%f\t%f\t%f\t%f\t%f\t0\n" % (millisec, roll, pitch, yaw, gx, gy, gz))
 
 outf.close()
 bag.close()
