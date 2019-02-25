@@ -21,13 +21,18 @@ VIDEO_TOPIC = "/camera/image_color/compressed"
 VIDEO_HZ_RATIO = 10
 
 def get_millisec(stamp):
+    # short time stamp
     unix_time = stamp.secs + stamp.nsecs / 1E9
     time_of_day = datetime.datetime.fromtimestamp(unix_time).strftime("%Y-%m-%d %H:%M:%S.%f")
     time_of_day_s = time_of_day.split(' ')[1].split('.')
     (H,M,S) = time_of_day_s[0].split(':')
     MS = time_of_day_s[1]
-    time = float(H) * 3600000 + float(M) * 60000 + float(S) * 1000 + float(MS) / 1e3
-    return time
+    short_time = float(H) * 3600000 + float(M) * 60000 + float(S) * 1000 + float(MS) / 1e3
+
+    # long time stamp
+    long_time = long(stamp.secs*1000 + stamp.nsecs/1e6)  # ms
+
+    return short_time
 
 # main
 bag = rosbag.Bag(ROS_BAG_PATH)
@@ -49,7 +54,7 @@ for topic, msg, ts in bag.read_messages(topics = [VIDEO_TOPIC]):
             #open file for writing
             videowriter = cv2.VideoWriter(VIDEO_PATH, fourcc, VIDEO_HZ_RATIO, (width, height))
 
-        cv2.putText(image_np, str(millisec), (20,50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255), 4)
+        # cv2.putText(image_np, str(millisec), (20,50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255), 4)
         videowriter.write(image_np)
 
 videowriter.release()

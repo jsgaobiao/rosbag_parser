@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="bag_path" default="/media/gaobiao/GaoBiaoBigDisk/GuiLin201712/hongling/Round1/LiDAR_CAM_INS_2017-12-12-15-13-15_2.bag"/>
-    <arg name="output_bag_path" default="/media/gaobiao/GaoBiaoBigDisk/GuiLin201712/hongling/Round1/intermediate_result/2_pointcloud_and_nav.bag"/>
+    <arg name="bag_path" default="/media/gaobiao/GaoBiaoBigDisk/GuiLin201712/garage_hongling_round/garage_hongling_round1/LiDAR_CAM_INS_2017-12-13-09-39-20_1.bag"/>
+    <arg name="output_bag_path" default="/media/gaobiao/GaoBiaoBigDisk/GuiLin201712/garage_hongling_round/garage_hongling_round1/GaoBiao/1_pointcloud_nav.bag"/>
     <arg name="rate" default="1"/>
     <!-- <arg name="listen_topic" default="/velodyne_points /ros_dwdx"/> -->
     <arg name="listen_topic" default="/velodyne_points /navsat/odom /navsat/origin"/>
